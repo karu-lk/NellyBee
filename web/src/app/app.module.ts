@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
+import {SlickModule} from 'ngx-slick';
 
 import {appRoutingProviders, routing} from './app.routes';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
     RouterModule,
     routing,
     Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
+    SlickModule.forRoot()
   ],
   providers: [
     appRoutingProviders
