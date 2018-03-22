@@ -38,7 +38,7 @@ export class ProductCategoryController {
         const description: string = req.body.description;
 
         if (!id || !categoryName) {
-            res.status(422).json({ message: 'Missing required fields.' });
+            res.status(422).json({ message: 'Missing required fields.' + JSON.stringify(req.body) });
         }
 
         const newProductCategory = new ProductCategory({
@@ -60,6 +60,7 @@ export class ProductCategoryController {
     public update(req: Request, res: Response): void {
         const categoryName: string = req.params.categoryName;
 
+        console.log(`key is ${categoryName}`);
         ProductCategory.findOneAndUpdate({ categoryName  }, req.body)
             .then((data) => {
                 res.status(200).json({ data });

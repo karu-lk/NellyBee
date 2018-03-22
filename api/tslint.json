@@ -49,8 +49,8 @@
         "no-bitwise": true,
         "no-console": [
             true,
-            "log",
-            "error",
+            //"log",
+            //"error",
             "debug",
             "info",
             "time",

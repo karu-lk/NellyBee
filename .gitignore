@@ -2,6 +2,7 @@
 
 # compiled output
 web/dist
+api/build
 /dist-server
 /tmp
 /out-tsc
