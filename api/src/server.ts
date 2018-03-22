@@ -7,9 +7,10 @@ import * as helmet from 'helmet';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as path from 'path';
-//import PostRouter from './router/PostRouter';
-//import UserRouter from './router/UserRouter';
-import productController from './controllers/productController'
+import productController from './controllers/productController';
+import productCategoryController from './controllers/productCategoryController';
+import productImageGalleryController from './controllers/productImageGalleryController';
+import stockController from './controllers/stockController';
 
 class Server {
 
@@ -53,8 +54,9 @@ class Server {
 
     this.app.use('/', router);
     this.app.use('/api/v1/products', productController);
-    //this.app.use('/api/v1/posts', PostRouter);
-    //this.app.use('/api/v1/users', UserRouter);
+    this.app.use('/api/v1/product-categories', productCategoryController);
+    this.app.use('/api/v1/product-images', productImageGalleryController);
+    this.app.use('/api/v1/stock', stockController);
   }
 }
 

@@ -8,7 +8,7 @@ var Product = new mongoose_1.Schema({
         unique: true,
         required: true
     },
-    SKU: {
+    sku: {
         type: String,
         required: true,
         unique: true
@@ -24,6 +24,18 @@ var Product = new mongoose_1.Schema({
     productCategory: {
         type: Number,
         required: true
+    },
+    purchasePrice: {
+        type: Number,
+        required: false
+    },
+    sellPrice: {
+        type: Number,
+        required: false
+    },
+    productImageGallery: {
+        type: Number,
+        required: false
     }
 });
 exports.default = mongoose_1.model('Product', Product);

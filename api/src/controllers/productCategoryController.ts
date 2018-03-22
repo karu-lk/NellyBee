@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
-import Product from '../models/Product';
+import ProductCategory from '../models/ProductCategory';
 
-export class ProductController {
+export class ProductCategoryController {
     public router: Router;
 
     constructor() {
@@ -9,11 +9,9 @@ export class ProductController {
         this.routes();
     }
 
-    // get all of the posts in the database
     public all(req: Request, res: Response): void {
-        Product.find()
+        ProductCategory.find()
             .then((data) => {
-                
                 res.status(200).json({ data });
             })
             .catch((error) => {
@@ -21,11 +19,10 @@ export class ProductController {
             });
     }
 
-    // get a single post by params of 'slug'
     public one(req: Request, res: Response): void {
-        const sku: string = req.params.sku;
+        const categoryName: string = req.params.categoryName;
 
-        Product.findOne({ sku })
+        ProductCategory.findOne({ categoryName })
             .then((data) => {
                 res.status(200).json({ data });
             })
@@ -36,25 +33,21 @@ export class ProductController {
 
     // create a new post
     public create(req: Request, res: Response): void {
-        const id: number = req.body.productId;
-        const sku: string = req.body.sku;
-        const productName: string = req.body.productName;
+        const id: number = req.body.productCategoryId;
+        const categoryName: string = req.body.categoryName;
         const description: string = req.body.description;
-        const productCategory: string = req.body.productCategory;
 
-        if (!id || !sku || !productName || description || productCategory) {
-            res.status(422).json({ message: 'All Fields Required.' });
+        if (!id || !categoryName) {
+            res.status(422).json({ message: 'Missing required fields.' });
         }
 
-        const newProduct = new Product({
+        const newProductCategory = new ProductCategory({
             id,
-            sku,
-            productName,
-            description,
-            productCategory
+            categoryName,
+            description
         });
 
-        newProduct.save()
+        newProductCategory.save()
             .then((data) => {
                 res.status(201).json({ data });
             })
@@ -65,9 +58,9 @@ export class ProductController {
 
     // update post by params of 'slug'
     public update(req: Request, res: Response): void {
-        const sku: string = req.body.sku;
+        const categoryName: string = req.params.categoryName;
 
-        Product.findOneAndUpdate({ sku  }, req.body)
+        ProductCategory.findOneAndUpdate({ categoryName  }, req.body)
             .then((data) => {
                 res.status(200).json({ data });
             })
@@ -78,9 +71,9 @@ export class ProductController {
 
     // delete post by params of 'slug'
     public delete(req: Request, res: Response): void {
-        const sku: string = req.body.sku;
+        const categoryName: string = req.params.categoryName;
 
-        Product.findOneAndRemove({ sku })
+        ProductCategory.findOneAndRemove({ categoryName })
             .then(() => {
                 res.status(204).end();
             })
@@ -91,14 +84,14 @@ export class ProductController {
 
     public routes() {
         this.router.get('/', this.all);
-        this.router.get('/:sku', this.one);
+        this.router.get('/:categoryName', this.one);
         this.router.post('/', this.create);
-        this.router.put('/:sku', this.update);
-        this.router.delete('/:sku', this.delete);
+        this.router.put('/:categoryName', this.update);
+        this.router.delete('/:categoryName', this.delete);
     }
 }
 
-const productController = new ProductController();
-productController.routes();
+const productCategoryController = new ProductCategoryController();
+productCategoryController.routes();
 
-export default productController.router;
+export default productCategoryController.router;

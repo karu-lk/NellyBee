@@ -8,9 +8,10 @@ var express = require("express");
 var helmet = require("helmet");
 var mongoose = require("mongoose");
 var logger = require("morgan");
-//import PostRouter from './router/PostRouter';
-//import UserRouter from './router/UserRouter';
 var productController_1 = require("./controllers/productController");
+var productCategoryController_1 = require("./controllers/productCategoryController");
+var productImageGalleryController_1 = require("./controllers/productImageGalleryController");
+var stockController_1 = require("./controllers/stockController");
 var Server = /** @class */ (function () {
     function Server() {
         this.app = express();
@@ -43,8 +44,9 @@ var Server = /** @class */ (function () {
         var router = express.Router();
         this.app.use('/', router);
         this.app.use('/api/v1/products', productController_1.default);
-        //this.app.use('/api/v1/posts', PostRouter);
-        //this.app.use('/api/v1/users', UserRouter);
+        this.app.use('/api/v1/product-categories', productCategoryController_1.default);
+        this.app.use('/api/v1/product-images', productImageGalleryController_1.default);
+        this.app.use('/api/v1/stock', stockController_1.default);
     };
     return Server;
 }());

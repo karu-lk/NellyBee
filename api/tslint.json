@@ -1,6 +1,9 @@
 {
-    "extends": ["tslint:recommended"],
+    "extends": [
+        "tslint:recommended"
+    ],
     "rules": {
+        "object-literal-sort-keys": false,
         "align": [
             true,
             "parameters",
@@ -16,11 +19,20 @@
         "curly": true,
         "eofline": false,
         "forin": true,
-        "indent": [ true, "spaces" ],
-        "interface-name": [true, "never-prefix"],
+        "indent": [
+            true,
+            "spaces"
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
         "jsdoc-format": true,
         "label-position": true,
-        "max-line-length": [ true, 120 ],
+        "max-line-length": [
+            true,
+            150
+        ],
         "member-access": true,
         "member-ordering": [
             true,
@@ -64,13 +76,24 @@
             "check-open-brace",
             "check-whitespace"
         ],
-        "ordered-imports": true,
-        "quotemark": [true, "single"],
+        "ordered-imports": false,
+        "quotemark": [
+            true,
+            "single"
+        ],
         "radix": true,
-        "semicolon": [true, "always"],
+        "semicolon": [
+            true,
+            "always"
+        ],
         "switch-default": true,
-        "trailing-comma": [true],
-        "triple-equals": [ true, "allow-null-check" ],
+        "trailing-comma": [
+            true
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
         "typedef": [
             true,
             "parameter",
@@ -86,7 +109,13 @@
                 "variable-declaration": "nospace"
             }
         ],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+        "variable-name": [
+            true,
+            "ban-keywords",
+            "check-format",
+            "allow-leading-underscore",
+            "allow-pascal-case"
+        ],
         "whitespace": [
             true,
             "check-branch",

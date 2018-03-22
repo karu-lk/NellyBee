@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
-import Product from '../models/Product';
+import ProductImageGallery from '../models/ProductImageGallery';
 
-export class ProductController {
+export class ProductImageGalleryController {
     public router: Router;
 
     constructor() {
@@ -9,11 +9,9 @@ export class ProductController {
         this.routes();
     }
 
-    // get all of the posts in the database
     public all(req: Request, res: Response): void {
-        Product.find()
+        ProductImageGallery.find()
             .then((data) => {
-                
                 res.status(200).json({ data });
             })
             .catch((error) => {
@@ -21,11 +19,10 @@ export class ProductController {
             });
     }
 
-    // get a single post by params of 'slug'
     public one(req: Request, res: Response): void {
-        const sku: string = req.params.sku;
+        const id: string = req.params.imageId;
 
-        Product.findOne({ sku })
+        ProductImageGallery.findOne({ id })
             .then((data) => {
                 res.status(200).json({ data });
             })
@@ -36,25 +33,23 @@ export class ProductController {
 
     // create a new post
     public create(req: Request, res: Response): void {
-        const id: number = req.body.productId;
-        const sku: string = req.body.sku;
-        const productName: string = req.body.productName;
+        const id: number = req.body.imageId;
+        const imageSequenceNo: number = req.body.imageSequenceNo;
+        const imagePath: string = req.body.imagePath;
         const description: string = req.body.description;
-        const productCategory: string = req.body.productCategory;
 
-        if (!id || !sku || !productName || description || productCategory) {
-            res.status(422).json({ message: 'All Fields Required.' });
+        if (!id || !imagePath) {
+            res.status(422).json({ message: 'Missing required fields.' });
         }
 
-        const newProduct = new Product({
+        const newProductImageGallery = new ProductImageGallery({
             id,
-            sku,
-            productName,
-            description,
-            productCategory
+            imageSequenceNo,
+            imagePath,
+            description
         });
 
-        newProduct.save()
+        newProductImageGallery.save()
             .then((data) => {
                 res.status(201).json({ data });
             })
@@ -65,9 +60,9 @@ export class ProductController {
 
     // update post by params of 'slug'
     public update(req: Request, res: Response): void {
-        const sku: string = req.body.sku;
+        const id: string = req.params.imageId;
 
-        Product.findOneAndUpdate({ sku  }, req.body)
+        ProductImageGallery.findOneAndUpdate({ id }, req.body)
             .then((data) => {
                 res.status(200).json({ data });
             })
@@ -78,9 +73,9 @@ export class ProductController {
 
     // delete post by params of 'slug'
     public delete(req: Request, res: Response): void {
-        const sku: string = req.body.sku;
+        const id: string = req.params.imageId;
 
-        Product.findOneAndRemove({ sku })
+        ProductImageGallery.findOneAndRemove({ id })
             .then(() => {
                 res.status(204).end();
             })
@@ -91,14 +86,14 @@ export class ProductController {
 
     public routes() {
         this.router.get('/', this.all);
-        this.router.get('/:sku', this.one);
+        this.router.get('/:imageId', this.one);
         this.router.post('/', this.create);
-        this.router.put('/:sku', this.update);
-        this.router.delete('/:sku', this.delete);
+        this.router.put('/:imageId', this.update);
+        this.router.delete('/:imageId', this.delete);
     }
 }
 
-const productController = new ProductController();
-productController.routes();
+const productImageGalleryController = new ProductImageGalleryController();
+productImageGalleryController.routes();
 
-export default productController.router;
+export default productImageGalleryController.router;

@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { Double } from 'bson';
 
 // tslint:disable object-literal-sort-keys
 const Product: Schema = new Schema({
@@ -8,7 +7,7 @@ const Product: Schema = new Schema({
     unique: true,
     required: true
   },
-  SKU: {
+  sku: {
     type: String,
     required: true,
     unique: true
@@ -24,6 +23,18 @@ const Product: Schema = new Schema({
   productCategory: {
     type: Number,
     required: true
+  },
+  purchasePrice: {
+    type: Number,
+    required: false
+  },
+  sellPrice: {
+    type: Number,
+    required: false
+  },
+  productImageGallery: {
+    type: Number,
+    required: false
   }
 });
 
