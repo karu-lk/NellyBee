@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
+import { OwlModule } from 'ngx-owl-carousel';
 
 import { appRoutingProviders, routing } from './app.routes';
 import { AppComponent } from './app.component';
@@ -23,7 +24,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
     BrowserModule,
     RouterModule,
     routing,
-    Angulartics2Module.forRoot([Angulartics2GoogleTagManager])
+    Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
+    OwlModule
   ],
   providers: [
     appRoutingProviders
