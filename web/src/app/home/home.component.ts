@@ -12,6 +12,12 @@ export class HomeComponent implements OnInit {
     './../../assets/images/slider/example-slide-350-3.jpg',
     './../../assets/images/slider/example-slide-350-4.jpg'];
 
+  tileImages: string[] = [
+    './../../assets/images/slider/example-slide-350-1.jpg',
+    './../../assets/images/slider/example-slide-350-2.jpg',
+    './../../assets/images/slider/example-slide-350-3.jpg',
+    './../../assets/images/slider/example-slide-350-4.jpg'];
+
   carouselOptions: any = {
     nav: false,
     dots: true,
@@ -19,6 +25,15 @@ export class HomeComponent implements OnInit {
     items: 1,
     lazyLoad: true,
     autoplay: true
+  };
+
+  tileCarouselOptions: any = {
+    nav: true,
+    dots: false,
+    loop: false,
+    items: 3,
+    lazyLoad: true,
+    autoplay: false
   };
 
   constructor() { }

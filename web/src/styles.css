@@ -1111,7 +1111,6 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   
   .side-menu .sub-menu > li {
     padding-left: 12px;
-    padding-top: 
   }
   
   .side-menu .sub-menu a:hover {
@@ -2350,5 +2349,6 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
       margin: 0; 
   }
   
-  
-  
+  #owl-slider{
+    margin-top: 5px;
+  }
