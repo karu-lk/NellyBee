@@ -183,7 +183,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   
   /* ------------------------------------ */
   .container {
-      max-width: 1200px;
+      /*max-width: 1200px;*/
+      max-width: 1360px;
   }
   
   .slick-slide {
@@ -2350,5 +2351,5 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   }
   
   #owl-slider{
-    margin-top: 5px;
+    margin-top: 0px;
   }
