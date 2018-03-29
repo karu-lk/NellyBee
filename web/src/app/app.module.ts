@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
 import { OwlModule } from 'ngx-owl-carousel';
+import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, } from "angular5-social-login";
 
 import { appRoutingProviders, routing } from './app.routes';
 import { AppComponent } from './app.component';
@@ -11,6 +12,24 @@ import { HomeComponent } from './home/home.component';
 import { NewArrivalsComponent } from './new-arrivals/new-arrivals.component';
 import { ShopComponent } from './shop/shop.component';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { LoginComponent } from './login/login.component';
+import { AuthService } from './services/auth.service';
+
+// Configs 
+export function getAuthServiceConfigs() {
+  let config = new AuthServiceConfig(
+    [
+      {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider("Your-Facebook-app-id")
+      },
+      {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider("77874948548-e5551sdgksfbsaqsgnmlrsvlm08saebm.apps.googleusercontent.com")
+      },
+    ]);
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -18,17 +37,24 @@ import { AboutUsComponent } from './about-us/about-us.component';
     HomeComponent,
     NewArrivalsComponent,
     ShopComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     RouterModule,
     routing,
     Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
-    OwlModule
+    OwlModule,
+    SocialLoginModule
   ],
   providers: [
-    appRoutingProviders
+    appRoutingProviders,
+    AuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
   ],
   bootstrap: [AppComponent]
 })
