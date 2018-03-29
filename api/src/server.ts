@@ -11,6 +11,7 @@ import productController from './controllers/productController';
 import productCategoryController from './controllers/productCategoryController';
 import productImageGalleryController from './controllers/productImageGalleryController';
 import stockController from './controllers/stockController';
+import userProfileController from './controllers/userProfileController';
 
 class Server {
 
@@ -57,6 +58,7 @@ class Server {
     this.app.use('/api/v1/product-categories', productCategoryController);
     this.app.use('/api/v1/product-images', productImageGalleryController);
     this.app.use('/api/v1/stock', stockController);
+    this.app.use('/api/v1/users', userProfileController);
   }
 }
 
