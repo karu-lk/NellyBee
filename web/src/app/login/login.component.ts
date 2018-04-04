@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular5-social-login';
+import { UserProfileService } from '../services/userProfile/user-profile.service';
 
 @Component({
   selector: 'app-login',
@@ -8,15 +9,9 @@ import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public userId: string;
-  public userIdToken: string;
-  public userEmail: string;
-  public userPic: string;
-  public userFullName: string;
-  public authProvider: string;
-  public authToken: string;
+  public newUser = { userId: '', userIdToken: '', userEmail: '', userPic: '', userFullName: '', authProvider: '', authToken: '' };
 
-  constructor(private socialAuthService: AuthService) { }
+  constructor(private socialAuthService: AuthService, private userProfileService: UserProfileService) { }
 
   ngOnInit() { }
 
@@ -30,27 +25,30 @@ export class LoginComponent implements OnInit {
 
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userProfile) => {
-        console.log(socialPlatform + " sign in data : ", userProfile);
-        this.userEmail = userProfile.email;
-        this.userId = userProfile.id;
-        this.userIdToken = userProfile.idToken;
-        this.userPic = userProfile.image;
-        this.userFullName = userProfile.name;
-        this.authProvider = userProfile.provider;
-        this.authToken = userProfile.token;
+        this.newUser.userEmail = userProfile.email;
+        this.newUser.userId = userProfile.id;
+        this.newUser.userIdToken = userProfile.idToken;
+        this.newUser.userPic = userProfile.image;
+        this.newUser.userFullName = userProfile.name;
+        this.newUser.authProvider = userProfile.provider;
+        this.newUser.authToken = userProfile.token;
         // Now sign-in with userData
+
+        var createUserReturn = this.userProfileService.createUser(this.newUser);
+        console.log(`Successfully created a pending user ${JSON.stringify(createUserReturn)}`);
       }
-    );
-  }
-
-  validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  }
-
-  emailValidate() {
-    if (this.validateEmail(this.userEmail)) {
-      console.log('Valid email address. Authentication is progressing...');
-    } else { }
+    )
   }
 }
+
+//   validateEmail(email) {
+//     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(email);
+//   }
+
+//   emailValidate() {
+//     if (this.validateEmail(this.userEmail)) {
+//       console.log('Valid email address. Authentication is progressing...');
+//     } else { }
+//   }
+// }

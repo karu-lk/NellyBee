@@ -22,6 +22,11 @@ const UserProfileSchema: Schema = new Schema({
   },
   authProvider: {
     type: String
+  },
+  userStatus:{
+    type: String,
+    default: 'pending',
+    required: true
   }
 
 });

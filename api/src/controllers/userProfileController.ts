@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import UserProfile from '../models/UserProfile';
+import { json } from 'body-parser';
 
 export class UserProfileController {
     public router: Router;
@@ -40,6 +41,7 @@ export class UserProfileController {
         const userPic: string = req.body.userPic;
         const userFullName: string = req.body.userFullName;
         const authProvider: string = req.body.authProvider;
+        const userStatus: string = 'pending';
 
         if (!id || !userFullName || !authToken) {
             res.status(422).json({ message: 'Missing required fields.' });
@@ -52,7 +54,8 @@ export class UserProfileController {
             userEmail,
             userPic,
             userFullName,
-            authProvider
+            authProvider,
+            userStatus
         });
 
         newUserProfile.save()

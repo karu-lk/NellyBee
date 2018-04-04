@@ -5,6 +5,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleTagManager } from 'angulartics2/gtm';
 import { OwlModule } from 'ngx-owl-carousel';
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, } from "angular5-social-login";
+import { HttpModule } from '@angular/http';
 
 import { appRoutingProviders, routing } from './app.routes';
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { ShopComponent } from './shop/shop.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './services/auth.service';
+import { UserProfileService } from './services/userProfile/user-profile.service';
 
 // Configs 
 export function getAuthServiceConfigs() {
@@ -41,6 +43,7 @@ export function getAuthServiceConfigs() {
     LoginComponent
   ],
   imports: [
+    HttpModule,
     BrowserModule,
     RouterModule,
     routing,
@@ -54,7 +57,8 @@ export function getAuthServiceConfigs() {
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
-    }
+    },
+    UserProfileService
   ],
   bootstrap: [AppComponent]
 })
