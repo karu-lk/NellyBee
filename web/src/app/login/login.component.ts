@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular5-social-login';
 import { UserProfileService } from '../services/userProfile/user-profile.service';
+import { nodemailer } from 'nodemailer';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { UserProfileService } from '../services/userProfile/user-profile.service
 export class LoginComponent implements OnInit {
   public newUser = { userId: '', userIdToken: '', userEmail: '', userPic: '', userFullName: '', authProvider: '', authToken: '' };
 
-  constructor(private socialAuthService: AuthService, private userProfileService: UserProfileService) { }
+  constructor(private socialAuthService: AuthService, private userProfileService: UserProfileService, private router: Router) { }
 
   ngOnInit() { }
 
@@ -36,9 +37,23 @@ export class LoginComponent implements OnInit {
 
         var createUserReturn = this.userProfileService.createUser(this.newUser);
         console.log(`Successfully created a pending user ${JSON.stringify(createUserReturn)}`);
+
+        if (createUserReturn) {
+          this.router.navigate(['/user-verification']);
+        }
       }
     )
   }
+
+  localLogin() {
+    this.router.navigate(['/coming-soon']);
+  }
+
+
+
+
+
+
 }
 
 //   validateEmail(email) {

@@ -16,6 +16,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './services/auth.service';
 import { UserProfileService } from './services/userProfile/user-profile.service';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
+import { UserVerificationComponent } from './user-verification/user-verification.component';
 
 // Configs 
 export function getAuthServiceConfigs() {
@@ -40,7 +42,9 @@ export function getAuthServiceConfigs() {
     NewArrivalsComponent,
     ShopComponent,
     AboutUsComponent,
-    LoginComponent
+    LoginComponent,
+    ComingSoonComponent,
+    UserVerificationComponent
   ],
   imports: [
     HttpModule,

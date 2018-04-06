@@ -5,6 +5,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { NewArrivalsComponent } from './new-arrivals/new-arrivals.component';
 import { ShopComponent } from './shop/shop.component';
 import { LoginComponent } from './login/login.component';
+import { ComingSoonComponent } from './coming-soon/coming-soon.component';
+import { UserVerificationComponent } from './user-verification/user-verification.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -12,6 +14,8 @@ const appRoutes: Routes = [
     { path: 'about-us', component: AboutUsComponent },
     { path: 'login', component: LoginComponent },
     { path: 'shop', component: ShopComponent },
+    { path: 'coming-soon', component: ComingSoonComponent },
+    { path: 'user-verification', component: UserVerificationComponent },
     { path: '**', component: HomeComponent }
 ];
 

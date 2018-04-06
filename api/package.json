@@ -19,7 +19,8 @@
     "helmet": "3.9.0",
     "lodash": "4.17.4",
     "mongoose": "5.0.0-rc1",
-    "morgan": "1.9.0"
+    "morgan": "1.9.0",
+    "nodemailer": "^4.6.4"
   },
   "devDependencies": {
     "@types/body-parser": "1.16.8",
