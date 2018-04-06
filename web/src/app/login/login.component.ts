@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular5-social-login';
 import { UserProfileService } from '../services/userProfile/user-profile.service';
-import { nodemailer } from 'nodemailer';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +10,7 @@ import { nodemailer } from 'nodemailer';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public newUser = { userId: '', userIdToken: '', userEmail: '', userPic: '', userFullName: '', authProvider: '', authToken: '' };
+  public newUser = { userId: '', userIdToken: '', userEmail: '', userPic: '', userFullName: '', authProvider: '', authToken: '', lastModifiedTime: moment() };
 
   constructor(private socialAuthService: AuthService, private userProfileService: UserProfileService, private router: Router) { }
 
@@ -33,12 +33,13 @@ export class LoginComponent implements OnInit {
         this.newUser.userFullName = userProfile.name;
         this.newUser.authProvider = userProfile.provider;
         this.newUser.authToken = userProfile.token;
+        this.newUser.lastModifiedTime = moment();
         // Now sign-in with userData
 
         var createUserReturn = this.userProfileService.createUser(this.newUser);
-        console.log(`Successfully created a pending user ${JSON.stringify(createUserReturn)}`);
+        console.log(`Successfully created a pending user ${createUserReturn.data}`);
 
-        if (createUserReturn) {
+        if (createUserReturn.data.userStatus) {
           this.router.navigate(['/user-verification']);
         }
       }

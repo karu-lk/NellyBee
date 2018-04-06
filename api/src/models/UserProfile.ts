@@ -23,9 +23,13 @@ const UserProfileSchema: Schema = new Schema({
   authProvider: {
     type: String
   },
-  userStatus:{
+  userStatus: {
     type: String,
     default: 'pending',
+    required: true
+  },
+  lastModifiedTime: {
+    type: Date,
     required: true
   }
 

@@ -42,6 +42,7 @@ export class UserProfileController {
         const userFullName: string = req.body.userFullName;
         const authProvider: string = req.body.authProvider;
         const userStatus: string = 'pending';
+        const lastModifiedTime: Date = req.body.lastModifiedTime;
 
         if (!id || !userFullName || !authToken) {
             res.status(422).json({ message: 'Missing required fields.' });
@@ -55,7 +56,8 @@ export class UserProfileController {
             userPic,
             userFullName,
             authProvider,
-            userStatus
+            userStatus,
+            lastModifiedTime
         });
 
         newUserProfile.save()
