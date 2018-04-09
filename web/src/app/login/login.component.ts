@@ -36,12 +36,15 @@ export class LoginComponent implements OnInit {
         this.newUser.lastModifiedTime = moment();
         // Now sign-in with userData
 
-        var createUserReturn = this.userProfileService.createUser(this.newUser);
-        console.log(`Successfully created a pending user ${createUserReturn.data}`);
-
-        if (createUserReturn.data.userStatus) {
-          this.router.navigate(['/user-verification']);
-        }
+        this.userProfileService.createUser(this.newUser).then(result => {
+          console.log(`Successfully created a pending user ${JSON.stringify(result)}`);
+          if (result.data.userStatus=='pending') {
+            this.router.navigate(['/user-verification']);
+          }
+          else if (result.data.userStatus=='verified') {
+            this.router.navigate(['/home']);
+          }
+        });
       }
     )
   }
