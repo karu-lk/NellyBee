@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import { Types } from 'mongoose';
 import UserProfile from '../models/UserProfile';
 import { json } from 'body-parser';
 import * as nodemailer from 'nodemailer';//'./../../node_modules/nodemailer';
@@ -104,16 +105,17 @@ export class UserProfileController {
     }
 
     public verifyUserPin(req: Request, res: Response): void {
-        const id: string = req.params.userId;
-        const newUserPin: string = req.params.newUserPin;
+        const id: string = req.body.userId;
+        const newUserPin: string = req.body.newUserPin;
 
-        UserProfile.findOne({ id, newUserPin })
-            .then((data) => {
-                res.status(200).json({ data });
-            })
-            .catch((error) => {
+        UserProfile.where('_id', Types.ObjectId(id)).where('newUserPin', newUserPin).exec((error, data) => {
+            if (error) {
                 res.status(500).json({ error });
-            });
+            }
+            else {
+                res.status(200).json({ data });
+            }
+        });
     }
 
     public routes() {
@@ -122,7 +124,7 @@ export class UserProfileController {
         this.router.post('/', this.create);
         this.router.put('/:userId', this.update);
         this.router.delete('/:userId', this.delete);
-        this.router.post('verify-new-user/', this.verifyUserPin);
+        this.router.post('/verify', this.verifyUserPin);
     }
 }
 
