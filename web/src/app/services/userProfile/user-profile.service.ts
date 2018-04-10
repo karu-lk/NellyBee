@@ -21,4 +21,17 @@ export class UserProfileService {
         });
     });
   }
+
+  verifyUserPin(userId, PinNumber) {
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      this.http.post(baseUrl + 'users', newUser, { headers: headers })
+        .subscribe(res => {
+          console.log('res at user profile service ' + res.json());
+          resolve(res.json())
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
 }

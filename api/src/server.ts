@@ -7,27 +7,12 @@ import * as helmet from 'helmet';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as path from 'path';
-import * as jwt from 'express-jwt';
-import * as jwks from 'jwks-rsa';
 
 import productController from './controllers/productController';
 import productCategoryController from './controllers/productCategoryController';
 import productImageGalleryController from './controllers/productImageGalleryController';
 import stockController from './controllers/stockController';
 import userProfileController from './controllers/userProfileController';
-
-//const authDomain = 'localhost:3001';
-var jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: "https://nelly-bee.auth0.com/.well-known/jwks.json"
-  }),
-  audience: 'http://localhost:3001',
-  issuer: "https://nelly-bee.auth0.com/",
-  algorithms: ['RS256']
-});
 
 class Server {
 
@@ -54,7 +39,6 @@ class Server {
     this.app.use(compression());
     this.app.use(helmet());
     this.app.use(cors());
-    this.app.use(jwtCheck);
 
     // cors
     this.app.use((req, res, next) => {

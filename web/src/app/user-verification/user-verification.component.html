@@ -1,3 +1,11 @@
-<p>
-  user-verification works!
-</p>
+<div class="login-container">
+<form role="form">
+  <div class="form-group">
+    <label for="inputUsernameEmail">Pin Number</label>
+    <input type="text" class="form-control" id="inputUsernameEmail">
+  </div>
+  <button type="submit" class="btn btn btn-primary login-btn" (click)="verifyNewUser()">
+    Confirm
+  </button>
+</form>
+</div>

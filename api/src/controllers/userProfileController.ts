@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
 import UserProfile from '../models/UserProfile';
 import { json } from 'body-parser';
+import * as nodemailer from 'nodemailer';//'./../../node_modules/nodemailer';
+import { resolve } from 'url';
 
 export class UserProfileController {
     public router: Router;
@@ -48,6 +50,8 @@ export class UserProfileController {
             res.status(422).json({ message: 'Missing required fields.' });
         }
 
+        let newUserPin = userPin();
+
         const newUserProfile = new UserProfile({
             id,
             userIdToken,
@@ -57,16 +61,20 @@ export class UserProfileController {
             userFullName,
             authProvider,
             userStatus,
+            newUserPin,
             lastModifiedTime
         });
 
         newUserProfile.save()
-            .then((data) => {
-                res.status(201).json({ data });
+            .then((newProfileResult) => {
+                sendMail(newProfileResult, newUserPin).then((sendMailResult) => {
+                    res.status(201).json({ sendMailResult })
+                }, sendMailError => {
+                    res.status(500).json({ sendMailError })
+                })
+            }, newProfileError => {
+                res.status(500).json({ newProfileError })
             })
-            .catch((error) => {
-                res.status(500).json({ error });
-            });
     }
 
     // update post by params of 'slug'
@@ -95,13 +103,107 @@ export class UserProfileController {
             });
     }
 
+    public verifyUserPin(req: Request, res: Response): void {
+        const id: string = req.params.userId;
+        const newUserPin: string = req.params.newUserPin;
+
+        UserProfile.findOne({ id, newUserPin })
+            .then((data) => {
+                res.status(200).json({ data });
+            })
+            .catch((error) => {
+                res.status(500).json({ error });
+            });
+    }
+
     public routes() {
         this.router.get('/', this.all);
         this.router.get('/:userId', this.one);
         this.router.post('/', this.create);
         this.router.put('/:userId', this.update);
         this.router.delete('/:userId', this.delete);
+        this.router.post('verify-new-user/', this.verifyUserPin);
     }
+}
+
+function sendMail(newProfileResult, newUserPin) {
+    console.log(JSON.stringify(newProfileResult));
+
+    return new Promise((resolve, reject) => {
+        var transporter: nodemailer.Transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'lilupa.karu.iata@gmail.com',
+                pass: 'illBan#1Alien1Day4Sure'
+            }
+        });
+
+        transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+                user: 'lilupa.karu.iata@gmail.com',
+                pass: 'illBan#1Alien1Day4Sure'
+            }
+        }, {
+                from: 'lilupa.karu.iata@gmail.com',
+                headers: {
+                    'My-Awesome-Header': '123'
+                }
+            });
+
+        let submitHtml = `<a href="http://localhost:3000/user-verification?verificationToken=${newProfileResult._id}" 
+        target="_blank" rel="noopener noreferrer" 
+        style="border-radius: 5px;
+        font-size: 20px;
+        padding: 14px 80px;
+        cursor: pointer;
+        color: #fff;
+        background-color: #00A6FF;
+        font-size: 1.5rem;
+        font-family: 'Roboto';
+        font-weight: 100;
+        border: 1px solid #fff;
+        box-shadow: 2px 2px 5px #AFE9FF;
+        transition-duration: 0.5s;
+        -webkit-transition-duration: 0.5s;
+        -moz-transition-duration: 0.5s;">Confirm my email address</a>`;
+
+        let emailBody;
+        emailBody = `Welcome to <b>Nelly Bee!</b> Please confirm your email address to get started.
+            It’s important to do this now, or we won’t be able to reset your password if you ever forget.
+            Please click on email confirmation button below and enter the pin number.
+            Your pin is ${newUserPin}
+            ${submitHtml}`;
+
+        var mailOptions: nodemailer.SendMailOptions = {
+            from: 'IATA, lilupa.karu.iata@gmail.com', // sender address
+            to: newProfileResult.userEmail,
+            subject: 'Welcome to Nelly Bee, confirm your email address and get started!',
+            text: 'Hello world', // plaintext body
+            html: emailBody
+        };
+
+        transporter.sendMail(mailOptions,
+            function (error, info) {
+                if (error) {
+                    console.log(error);
+                    reject(error);
+                    //res.status(500).json({ message: error });
+                } else {
+                    console.log('Message sent: ' + info.response);
+                    //res.status(200).json({ message: 'Successfully sent the email notification', data: info.response });
+                    resolve(info.response);
+                };
+            });
+    });
+}
+
+
+function userPin(): number {
+    let lowNumber = 111111;
+    let highNumber = 999999;
+    let pin = Math.random() * (highNumber - lowNumber) + lowNumber;
+    return Number(pin.toString().split('.')[0]);
 }
 
 const userProfileController = new UserProfileController();

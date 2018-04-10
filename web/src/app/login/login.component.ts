@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
 
         this.userProfileService.createUser(this.newUser).then(result => {
           console.log(`Successfully created a pending user ${JSON.stringify(result)}`);
+          //var test=JSON.parse(result);
           if (result.data.userStatus=='pending') {
             this.router.navigate(['/user-verification']);
           }

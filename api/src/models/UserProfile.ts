@@ -28,6 +28,9 @@ const UserProfileSchema: Schema = new Schema({
     default: 'pending',
     required: true
   },
+  newUserPin: {
+    type: String
+  },
   lastModifiedTime: {
     type: Date,
     required: true
