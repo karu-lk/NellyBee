@@ -4,6 +4,7 @@ import UserProfile from '../models/UserProfile';
 import { json } from 'body-parser';
 import * as nodemailer from 'nodemailer';//'./../../node_modules/nodemailer';
 import { resolve } from 'url';
+import * as moment from 'moment';
 
 export class UserProfileController {
     public router: Router;
@@ -68,8 +69,9 @@ export class UserProfileController {
 
         newUserProfile.save()
             .then((newProfileResult) => {
-                sendMail(newProfileResult, newUserPin).then((sendMailResult) => {
-                    res.status(201).json({ sendMailResult })
+                //sendMail(newProfileResult, newUserPin).then((sendMailResult) => {
+                sendMailMock(newProfileResult, newUserPin).then((sendMailResult) => {
+                    res.status(201).json({ "userId": newProfileResult._id })
                 }, sendMailError => {
                     res.status(500).json({ sendMailError })
                 })
@@ -107,13 +109,21 @@ export class UserProfileController {
     public verifyUserPin(req: Request, res: Response): void {
         const id: string = req.body.userId;
         const newUserPin: string = req.body.newUserPin;
-
-        UserProfile.where('_id', Types.ObjectId(id)).where('newUserPin', newUserPin).exec((error, data) => {
-            if (error) {
-                res.status(500).json({ error });
+        UserProfile.where('_id', Types.ObjectId(id)).where('newUserPin', newUserPin).exec((findUserProfileError, findUserProfileData) => {
+            if (findUserProfileError) {
+                res.status(500).json({ findUserProfileError });
+            }
+            else if (findUserProfileData.length <= 0) {
+                res.status(404).json({ message: "Unable to find the user profile" });
             }
             else {
-                res.status(200).json({ data });
+                console.log('--- ' + JSON.stringify(findUserProfileData));
+                updateUserVerificationFalg(Types.ObjectId(id)).then(updateUserVerificationFalgResult => {
+                    res.status(200).json({ updateUserVerificationFalgResult });
+                }, (updateUserVerificationFalgError => {
+                    res.status(500).json({ updateUserVerificationFalgError });
+                })
+                );
             }
         });
     }
@@ -126,6 +136,14 @@ export class UserProfileController {
         this.router.delete('/:userId', this.delete);
         this.router.post('/verify', this.verifyUserPin);
     }
+}
+
+function sendMailMock(newProfileResult, newUserPin) {
+    console.log(JSON.stringify(newProfileResult));
+
+    return new Promise((resolve, reject) => {
+        resolve({ status: 200, message: 'Successfully sent the email notification' });
+    });
 }
 
 function sendMail(newProfileResult, newUserPin) {
@@ -200,6 +218,19 @@ function sendMail(newProfileResult, newUserPin) {
     });
 }
 
+function updateUserVerificationFalg(userId) {
+    return new Promise((resolve, reject) => {
+        let updatedValue = { "userStatus": "verified", "lastModifiedTime": moment() }
+        UserProfile.findOneAndUpdate({ '_id': Types.ObjectId(userId) }, updatedValue)
+            .then((data) => {
+                console.log('--- flag updated');
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 function userPin(): number {
     let lowNumber = 111111;

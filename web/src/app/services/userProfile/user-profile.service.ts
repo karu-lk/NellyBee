@@ -14,8 +14,8 @@ export class UserProfileService {
       let headers = new Headers();
       this.http.post(baseUrl + 'users', newUser, { headers: headers })
         .subscribe(res => {
-          console.log('res at user profile service ' + JSON.stringify(res.status));
-          resolve(res.status);
+          console.log('res at user profile service ' + JSON.stringify(res.json()));
+          resolve(res);
         }, (err) => {
           reject(err);
         });
@@ -28,7 +28,7 @@ export class UserProfileService {
       let userVerification = { userId: userId, pin: PinNumber };
       this.http.post(baseUrl + 'users/verify', userVerification, { headers: headers })
         .subscribe(res => {
-          console.log('res at user verification ' + res.json());
+          console.log('res at user verification ' + JSON.stringify(res));
           resolve(res.json())
         }, (err) => {
           reject(err);

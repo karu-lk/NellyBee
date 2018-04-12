@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider } from 'angular5-social-login';
 import { UserProfileService } from '../services/userProfile/user-profile.service';
 import * as moment from 'moment';
+import { TokenType } from '@angular/compiler';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'app-login',
@@ -36,11 +38,12 @@ export class LoginComponent implements OnInit {
         this.newUser.lastModifiedTime = moment();
         // Now sign-in with userData
 
-        this.userProfileService.createUser(this.newUser).then(result => {
+        let _self = this;
+        this.userProfileService.createUser(this.newUser).then(function (result: Response) {
+          console.log(`Successfully created a pending user ${JSON.stringify(result.json().userId)}`);
 
-          console.log(`Successfully created a pending user ${result}`);
-          if (result == 201) {
-            this.router.navigate(['/user-verification']);
+          if (result.status == 201) {
+            _self.router.navigate(['/user-verification'], { queryParams: { "verificationToken": result.json().userId } });
           }
           else {
             this.router.navigate(['/home']);
@@ -53,22 +56,4 @@ export class LoginComponent implements OnInit {
   localLogin() {
     this.router.navigate(['/coming-soon']);
   }
-
-
-
-
-
-
 }
-
-//   validateEmail(email) {
-//     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(email);
-//   }
-
-//   emailValidate() {
-//     if (this.validateEmail(this.userEmail)) {
-//       console.log('Valid email address. Authentication is progressing...');
-//     } else { }
-//   }
-// }
