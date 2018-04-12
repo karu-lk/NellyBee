@@ -69,8 +69,8 @@ export class UserProfileController {
 
         newUserProfile.save()
             .then((newProfileResult) => {
-                //sendMail(newProfileResult, newUserPin).then((sendMailResult) => {
-                sendMailMock(newProfileResult, newUserPin).then((sendMailResult) => {
+                sendMail(newProfileResult, newUserPin).then((sendMailResult) => {
+                //sendMailMock(newProfileResult, newUserPin).then((sendMailResult) => {
                     res.status(201).json({ "userId": newProfileResult._id })
                 }, sendMailError => {
                     res.status(500).json({ sendMailError })
